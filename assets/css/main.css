@@ -106,6 +106,10 @@ input, select, textarea {
 		letter-spacing: -0.025em;
 		line-height: 1.75em;
 	}
+	.phone-icon  {
+		transform: rotate(90deg);
+		display: inline-block;
+	}	
 
 	a {
 		-moz-transition: border-color 0.2s ease-in-out;
