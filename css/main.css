@@ -51,6 +51,7 @@ a:hover {
     overflow: hidden;
     position: relative;
     z-index: 10;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* 🟢 Yangi o'tish effekti */
 }
 
 .terminal-header {
@@ -112,20 +113,18 @@ a:hover {
     word-break: break-word;
 }
 
-/* 🟢 XATOLIK TUZATILDI: Elementlar yangi qatorga o'tib ketmasligi uchun */
 .terminal-prompt {
     display: flex;
     align-items: center;
     margin-top: 10px;
-    flex-wrap: nowrap; /* Yangi qatorga o'tishni taqiqlash */
+    flex-wrap: nowrap;
 }
 
-/* 🟢 YANGI USLUB: Prompt matni uchun */
 .prompt-label {
     display: flex; 
     align-items: center;
-    white-space: nowrap; /* Matnni o'zini ham sindirmaslik */
-    flex-shrink: 0; /* Kichraymaslik */
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .prompt-user { color: var(--terminal-fg); font-weight: bold; }
@@ -139,9 +138,9 @@ a:hover {
     font-family: 'Roboto Mono', monospace;
     font-size: 1em;
     padding-left: 5px;
-    flex: 1; /* Qolgan bo'sh joyni egallash */
+    flex: 1;
     caret-color: var(--cursor-color); 
-    min-width: 50px; /* Minimal o'lcham */
+    min-width: 50px;
 }
 
 .profile-data h2 {
@@ -157,3 +156,10 @@ a:hover {
 .hidden { display: none !important; }
 .mt-2 { margin-top: 10px; }
 .mt-3 { margin-top: 20px; }
+
+/* 🟢 YANGI USLUB: Terminalni yopish effekti */
+.terminal-container.fade-out {
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none; /* Yo'qolganidan keyin bosilmasligi uchun */
+}

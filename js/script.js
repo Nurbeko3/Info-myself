@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const commandInput = document.getElementById('command-input');
     const profileDataElement = document.getElementById('profile-data');
     const terminalBody = document.getElementById('terminal-body');
+    const terminalContainer = document.querySelector('.terminal-container'); // 🟢 Terminal konteynerini topish
 
     const initialTextLines = [
         "Initializing system sequence...",
@@ -97,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const command = commandInput.value.trim().toLowerCase();
         
         const echo = document.createElement('div');
-        // Buyruqni echo qilishda xatolik yo'q, u oddiy div
         echo.innerHTML = `<span class="prompt-user">root@cyberspace</span>:<span class="prompt-path">~</span>$ ${command}`;
         outputElement.appendChild(echo);
         
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
         terminalBody.scrollTop = terminalBody.scrollHeight;
     });
 
-    // 3. Buyruqlarni qayta ishlash logikasi
+    // 3. Buyruqlarni qayta ishlash logikasi (YANGILANDI)
     function processCommand(cmd) {
         profileDataElement.classList.add('hidden');
         
@@ -123,7 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 '  social   - Show contact protocols and biography',
                 '  help     - Display this help message',
                 '  clear    - Clear the terminal screen',
-                '  reboot   - Restart the console (visual effect)'
+                '  reboot   - Restart the console (visual effect)',
+                '  exit     - Shut down the terminal' // 🟢 'exit' qo'shildi
             ].join('\n');
             outputElement.appendChild(helpText);
         
@@ -136,6 +137,21 @@ document.addEventListener('DOMContentLoaded', () => {
             charIndex = 0;
             inputLineElement.classList.add('hidden'); 
             setTimeout(typeWriter, 500);
+        
+        // 🟢 YANGI BUYRUQ: EXIT
+        } else if (cmd === 'exit') {
+            const exitText = document.createElement('pre');
+            exitText.style.color = '#00ff00';
+            exitText.textContent = 'Shutting down console... Goodbye.';
+            outputElement.appendChild(exitText);
+            
+            // Kiritish maydonini o'chirish
+            inputLineElement.classList.add('hidden');
+            
+            // Terminalni 1 soniyadan keyin silliq yo'qotish
+            setTimeout(() => {
+                terminalContainer.classList.add('fade-out');
+            }, 1000);
         
         } else if (cmd === '') {
             // Hech narsa qilmaslik
