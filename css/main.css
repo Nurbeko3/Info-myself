@@ -1,0 +1,159 @@
+:root {
+    --terminal-bg: #000000;
+    --terminal-fg: #00ff00; /* Yashil matn */
+    --terminal-border: #008800;
+    --cursor-color: #00ff00;
+    --header-bg: #111111;
+}
+
+body {
+    background-color: #000000;
+    color: var(--terminal-fg);
+    font-family: 'Roboto Mono', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; 
+    opacity: 0.6;
+}
+
+a {
+    color: var(--terminal-fg);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--terminal-fg);
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #33ff33;
+    border-bottom-color: #33ff33;
+}
+
+.terminal-container {
+    width: 90%;
+    max-width: 800px;
+    border: 3px solid var(--terminal-border);
+    box-shadow: 0 0 20px var(--terminal-fg), inset 0 0 8px var(--terminal-fg);
+    background-color: rgba(0, 0, 0, 0.9); 
+    margin: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+}
+
+.terminal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--header-bg);
+    padding: 5px 10px;
+    border-bottom: 1px solid var(--terminal-border);
+    cursor: default;
+}
+
+.header-text {
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 0 5px var(--terminal-fg);
+}
+
+.header-controls .control-btn {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: 5px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    color: var(--terminal-bg);
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.header-controls .close { background-color: #ff5f56; } 
+.header-controls .maximize { background-color: #ffbd2e; } 
+.header-controls .minimize { background-color: #27c93f; } 
+
+
+.terminal-body {
+    padding: 15px;
+    height: 500px; 
+    max-height: 80vh;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    background-image: linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px);
+    background-size: 100% 4px;
+    animation: scanline 5s infinite linear;
+}
+
+@keyframes scanline {
+    to { background-position: 0 400px; }
+}
+
+
+.terminal-output {
+    margin: 0;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* 🟢 XATOLIK TUZATILDI: Elementlar yangi qatorga o'tib ketmasligi uchun */
+.terminal-prompt {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    flex-wrap: nowrap; /* Yangi qatorga o'tishni taqiqlash */
+}
+
+/* 🟢 YANGI USLUB: Prompt matni uchun */
+.prompt-label {
+    display: flex; 
+    align-items: center;
+    white-space: nowrap; /* Matnni o'zini ham sindirmaslik */
+    flex-shrink: 0; /* Kichraymaslik */
+}
+
+.prompt-user { color: var(--terminal-fg); font-weight: bold; }
+.prompt-path { color: #4CAF50; }
+
+#command-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--terminal-fg);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1em;
+    padding-left: 5px;
+    flex: 1; /* Qolgan bo'sh joyni egallash */
+    caret-color: var(--cursor-color); 
+    min-width: 50px; /* Minimal o'lcham */
+}
+
+.profile-data h2 {
+    color: #ffffff;
+    text-shadow: 0 0 5px #00ff00;
+    border-bottom: 1px solid var(--terminal-border);
+    padding-bottom: 5px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.highlight { color: #ffff00; font-weight: bold; }
+.hidden { display: none !important; }
+.mt-2 { margin-top: 10px; }
+.mt-3 { margin-top: 20px; }

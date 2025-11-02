@@ -1,43 +1,66 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="uz">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Portfolio | Sobirov Nurbek</title>
-  <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="assets/css/playlist.css">
-  <link rel="icon" type="image/png" href="/assets/css/images/hacking.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurbek | Virtual Konsol</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📟</text></svg>">
 </head>
-<body class="is-preload">
-<div id="wrapper">
-  <div id="bg"></div>
-  <div id="overlay"></div>
-  <div id="main">
-    <!-- Header -->
-    <header id="header">
-      <h1>Sobirov Nurbek</h1>
-      <p>Network Administration &nbsp;&bull;&nbsp; Web-Developer &nbsp;&bull;&nbsp; Pentester &nbsp;&bull;&nbsp; Sax-Player</p>
-      <nav>
-        <ul>
-          <li><a target="_blank" href="https://www.instagram.com/nurbek_saxophonist" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-          <li><a target="_blank" href="https://t.me/Makkalik_Yigit" class="icon brands fa-telegram"><span class="label">Telegram</span></a></li>
-          <li><a target="_blank" href="https://github.com/Nurbeko3" class="icon brands fa-github"><span class="label">Github</span></a></li>
-          <li><a href="mailto:nurkn177@gmail.com" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
-          <li><a href="tel:+998935922560" class="icon solid fa-phone phone-icon"><span class="label">Phone</span></a></li>
-        </ul>
-      </nav>
-    </header>
+<body>
+    <canvas id="matrix-canvas"></canvas> 
     
-    <!-- Footer -->
-    <footer id="footer">
-      <span class="copyright">&copy; Designed by: <a href="https://t.me/Makkalik_Yigit">Nurbek</a>.</span>
-    </footer>
-  </div>
-</div>
-<script>
-  window.onload = function() { document.body.classList.remove('is-preload'); }
-  window.ontouchmove = function() { return false; }
-  window.onorientationchange = function() { document.body.scrollTop = 0; }
-</script>
+    <div class="terminal-container">
+        <header class="terminal-header">
+            <span class="header-text">[[ ROOT ACCESS GRANTED ]]</span>
+            <div class="header-controls">
+                <span class="control-btn minimize">_</span>
+                <span class="control-btn maximize">☐</span>
+                <span class="control-btn close">X</span>
+            </div>
+        </header>
+        <div class="terminal-body" id="terminal-body">
+            <pre id="terminal-output" class="terminal-output"></pre>
+            
+            <div id="terminal-input-line" class="terminal-prompt hidden">
+                <label for="command-input" class="prompt-label">
+                    <span class="prompt-user">root@cyberspace</span>:
+                    <span class="prompt-path">~</span>$ 
+                </label>
+                <form id="command-form" style="display: contents;">
+                    <input type="text" 
+                           id="command-input" 
+                           autocomplete="off" 
+                           autocorrect="off" 
+                           autocapitalize="off" 
+                           spellcheck="false" 
+                           autofocus>
+                </form>
+            </div>
+            <div class="profile-data hidden" id="profile-data">
+                <section class="about-me">
+                    <h2>// BIOGRAFİYA V 1.0</h2>
+                    <p class="bio-line">><span class="highlight">Status:</span> **ONLINE**</p>
+                    <p class="bio-line">><span class="highlight">Fayl nomi:</span> **NURBEK**</p>
+                    <p class="bio-line">><span class="highlight">ID:</span> **0x7F000001** (Lokal xost)</p>
+                    
+                    <p class="bio-line mt-2">><span class="highlight">Mutaxassislik 1:</span> **FRONTEND DEVELOPER**</p>
+                    <p class="bio-line">><span class="highlight">Mutaxassislik 2:</span> **PENETRATION TESTER**</p>
+                    <p class="bio-line">><span class="highlight">Hobby/Baza:</span> **SAX PLAYER**</p>
+                </section>
+
+                <section class="contact-info mt-3">
+                    <h2>// BOG'LANISH PROTOKOLLARI</h2>
+                    <p class="contact-line">><span class="highlight">Email:</span> <a href="mailto:nurkn177@gmail.com">nurkn177@gmail.com</a></p>
+                    <p class="contact-line">><span class="highlight">Telefon:</span> <a href="tel:+998935922560">+998935922560</a></p>
+                    <p class="contact-line">><span class="highlight">Telegram:</span> <a href="https://t.me/makkalik_yigit" target="_blank">@makkalik_yigit</a></p>
+                    <p class="contact-line">><span class="highlight">Instagram:</span> <a href="https://instagram.com/nurbek_saxophonist" target="_blank">@nurbek_saxophonist</a></p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/script.js"></script>
 </body>
 </html>
