@@ -1,165 +1,430 @@
 :root {
-    --terminal-bg: #000000;
-    --terminal-fg: #00ff00; /* Yashil matn */
-    --terminal-border: #008800;
-    --cursor-color: #00ff00;
-    --header-bg: #111111;
+  --bg-color: #050505;
+  --glass-bg: rgba(10, 10, 10, 0.8);
+  --glass-border: rgba(0, 255, 0, 0.3);
+  --primary-color: #00ff00;
+  --secondary-color: #ff3333; /* For Pentesting */
+  --accent-color: #ffd700; /* Gold for Saxophone */
+  --text-color: #e0e0e0;
+  --font-mono: 'Roboto Mono', monospace;
+  --font-display: 'Orbitron', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background-color: #000000;
-    color: var(--terminal-fg);
-    font-family: 'Roboto Mono', monospace;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    overflow: hidden;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-mono);
+  height: 100vh;
+  overflow: hidden; /* Prevent body scroll, handle inside container */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* --- BACKGROUND FX --- */
 #matrix-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  opacity: 0.3;
+}
+
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.2)
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* --- MAIN INTERFACE --- */
+.cyber-interface {
+  width: 95%;
+  max-width: 1200px;
+  height: 90vh;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(5px);
+  position: relative;
+  border-radius: 8px;
+}
+
+/* --- HEADER --- */
+.cyber-header {
+  height: 80px;
+  border-bottom: 1px solid var(--glass-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+}
+
+.brand h1 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.rank {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.system-status {
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--primary-color);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+/* --- CONTAINER --- */
+.cyber-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* --- NAV --- */
+.cyber-nav {
+  width: 250px;
+  border-right: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: #888;
+  padding: 15px 30px;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+}
+
+.nav-btn .icon { font-size: 1.2rem; }
+
+.nav-btn:hover, .nav-btn.active {
+  color: var(--primary-color);
+  background: rgba(0, 255, 0, 0.1);
+  padding-left: 35px;
+}
+
+.nav-btn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--primary-color);
+  transform: scaleY(0);
+  transition: transform 0.3s;
+}
+
+.nav-btn.active::before {
+  transform: scaleY(1);
+}
+
+/* Saxophone Button Special Style */
+.nav-btn.sax-btn:hover, .nav-btn.sax-btn.active {
+  color: var(--accent-color);
+  background: rgba(255, 215, 0, 0.1);
+}
+.nav-btn.sax-btn::before {
+  background: var(--accent-color);
+}
+
+
+/* --- DISPLAY SCREEN --- */
+.display-screen {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  position: relative;
+}
+
+.screen-section {
+  display: none;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.screen-section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 10px;
+  width: fit-content;
+}
+
+/* --- TERMINAL WINDOW --- */
+.terminal-window {
+  background: black;
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.terminal-bar {
+  background: #222;
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #333;
+}
+
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+
+.terminal-bar .title {
+  margin-left: 10px;
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.terminal-content {
+  padding: 20px;
+  min-height: 300px;
+  color: var(--primary-color);
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.command-line {
+  display: flex;
+  padding: 10px 20px;
+  border-top: 1px solid #333;
+  align-items: center;
+}
+
+.prompt { color: var(--primary-color); margin-right: 10px; }
+#cmd-input {
+  background: transparent;
+  border: none;
+  color: white;
+  flex: 1;
+  font-family: var(--font-mono);
+  outline: none;
+}
+
+/* --- SKILLS --- */
+.skill-category { margin-bottom: 40px; }
+.skill-category h3 { color: #888; margin-bottom: 15px; }
+
+.skill-bar-container { margin-bottom: 15px; }
+.skill-label { margin-bottom: 5px; font-size: 0.9rem; }
+.skill-bar {
+  height: 8px;
+  background: #222;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.skill-bar .fill {
+  height: 100%;
+  border-radius: 4px;
+  box-shadow: 0 0 10px currentColor;
+}
+
+
+/* --- MUSIC SECTION (Visualizer) --- */
+.text-gold { color: var(--accent-color); border-color: var(--accent-color); }
+
+.music-card {
+  border: 1px solid var(--accent-color);
+  padding: 40px;
+  text-align: center;
+  background: rgba(255, 215, 0, 0.05);
+  border-radius: 10px;
+}
+
+.visualizer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100px;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.visualizer .bar {
+  width: 15px;
+  background: var(--accent-color);
+  animation: equalize 1s infinite;
+}
+
+.visualizer .bar:nth-child(even) { animation-duration: 1.2s; }
+.visualizer .bar:nth-child(3n) { animation-duration: 0.8s; }
+
+@keyframes equalize {
+  0%, 100% { height: 20px; }
+  50% { height: 80px; }
+}
+
+.tag {
+  display: inline-block;
+  padding: 5px 15px;
+  border: 1px solid currentColor;
+  border-radius: 20px;
+  margin: 5px;
+  font-size: 0.8rem;
+}
+.tag.gold { color: var(--accent-color); }
+
+
+/* --- CONTACT GRID --- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.contact-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 30px;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+}
+
+.contact-card:hover {
+  border-color: var(--primary-color);
+  background: rgba(0, 255, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+.contact-card .icon { font-size: 2rem; margin-bottom: 15px; }
+.contact-card .info { font-family: var(--font-display); font-weight: bold; }
+.contact-card .sub-info { font-size: 0.8rem; color: #888; margin-top: 5px; }
+
+/* --- FOOTER --- */
+.cyber-footer {
+  text-align: center;
+  padding: 10px;
+  border-top: 1px solid var(--glass-border);
+  font-size: 0.7rem;
+  color: #666;
+  background: rgba(0,0,0,0.5);
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .cyber-interface {
+    flex-direction: column;
+    height: 100vh;
     width: 100%;
-    height: 100%;
-    z-index: 1; 
-    opacity: 0.6;
-}
-
-a {
-    color: var(--terminal-fg);
-    text-decoration: none;
-    border-bottom: 1px dashed var(--terminal-fg);
-    transition: color 0.3s;
-}
-
-a:hover {
-    color: #33ff33;
-    border-bottom-color: #33ff33;
-}
-
-.terminal-container {
-    width: 90%;
-    max-width: 800px;
-    border: 3px solid var(--terminal-border);
-    box-shadow: 0 0 20px var(--terminal-fg), inset 0 0 8px var(--terminal-fg);
-    background-color: rgba(0, 0, 0, 0.9); 
-    margin: 20px;
-    border-radius: 5px;
-    overflow: hidden;
-    position: relative;
-    z-index: 10;
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* 🟢 Yangi o'tish effekti */
-}
-
-.terminal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--header-bg);
-    padding: 5px 10px;
-    border-bottom: 1px solid var(--terminal-border);
-    cursor: default;
-}
-
-.header-text {
-    font-weight: bold;
-    color: #ffffff;
-    text-shadow: 0 0 5px var(--terminal-fg);
-}
-
-.header-controls .control-btn {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    margin-left: 5px;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 10px;
-    font-size: 10px;
-    font-weight: bold;
-    color: var(--terminal-bg);
-    cursor: pointer;
-    opacity: 0.8;
-}
-
-.header-controls .close { background-color: #ff5f56; } 
-.header-controls .maximize { background-color: #ffbd2e; } 
-.header-controls .minimize { background-color: #27c93f; } 
-
-
-.terminal-body {
-    padding: 15px;
-    height: 500px; 
-    max-height: 80vh;
-    overflow-y: auto;
-    white-space: pre-wrap;
-    background-image: linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px);
-    background-size: 100% 4px;
-    animation: scanline 5s infinite linear;
-}
-
-@keyframes scanline {
-    to { background-position: 0 400px; }
-}
-
-
-.terminal-output {
-    margin: 0;
-    line-height: 1.5;
-    white-space: pre-wrap;
-    word-break: break-word;
-}
-
-.terminal-prompt {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    flex-wrap: nowrap;
-}
-
-.prompt-label {
-    display: flex; 
-    align-items: center;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.prompt-user { color: var(--terminal-fg); font-weight: bold; }
-.prompt-path { color: #4CAF50; }
-
-#command-input {
-    background: transparent;
     border: none;
-    outline: none;
-    color: var(--terminal-fg);
-    font-family: 'Roboto Mono', monospace;
-    font-size: 1em;
-    padding-left: 5px;
-    flex: 1;
-    caret-color: var(--cursor-color); 
-    min-width: 50px;
-}
+  }
+  
+  .cyber-header {
+    padding: 10px 15px;
+    height: auto;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .cyber-container {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  .cyber-nav {
+    flex-direction: row;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0;
+    overflow-x: auto;
+  }
+  
+  .nav-btn {
+    padding: 15px;
+    flex-direction: column;
+    font-size: 0.8rem;
+    gap: 5px;
+    text-align: center;
+  }
 
-.profile-data h2 {
-    color: #ffffff;
-    text-shadow: 0 0 5px #00ff00;
-    border-bottom: 1px solid var(--terminal-border);
-    padding-bottom: 5px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
-.highlight { color: #ffff00; font-weight: bold; }
-.hidden { display: none !important; }
-.mt-2 { margin-top: 10px; }
-.mt-3 { margin-top: 20px; }
-
-/* 🟢 YANGI USLUB: Terminalni yopish effekti */
-.terminal-container.fade-out {
-    opacity: 0;
-    transform: scale(0.9);
-    pointer-events: none; /* Yo'qolganidan keyin bosilmasligi uchun */
+  .nav-btn:hover, .nav-btn.active {
+    padding-left: 15px; /* Reset animation padding for mobile */
+    background: transparent;
+    color: var(--primary-color);
+  }
+  
+  .display-screen {
+    padding: 20px;
+    overflow: visible; /* Let the container scroll */
+  }
+  
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Buttons should look more clickable on mobile */
+  .contact-card {
+    padding: 20px;
+    background: rgba(255,255,255,0.1);
+  }
 }

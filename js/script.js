@@ -1,174 +1,147 @@
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // ==========================================================
-    // A. MATRIX EFFECT
-    // ==========================================================
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
+document.addEventListener("DOMContentLoaded", () => {
+  // ==========================================================
+  // 1. MATRIX EFFECT (Background)
+  // ==========================================================
+  const canvas = document.getElementById("matrix-canvas");
+  const ctx = canvas.getContext("2d");
 
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const charSize = 14;
+  let columns = Math.floor(canvas.width / charSize);
+  let y_positions = Array(columns).fill(0);
+
+  const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+";
+
+  function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00FF00";
+    ctx.font = `${charSize}px monospace`;
+
+    y_positions.forEach((y, index) => {
+      const char = matrixChars.charAt(
+        Math.floor(Math.random() * matrixChars.length)
+      );
+      const x = index * charSize;
+
+      ctx.fillText(char, x, y);
+
+      if (y > canvas.height && Math.random() > 0.99) {
+        y_positions[index] = 0;
+      } else {
+        y_positions[index] = y + charSize;
+      }
+    });
+  }
+
+  setInterval(drawMatrix, 50);
+
+  window.addEventListener("resize", () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    columns = Math.floor(canvas.width / charSize);
+    y_positions = Array(columns).fill(0);
+  });
 
-    const charSize = 10;
-    let columns = Math.floor(canvas.width / charSize);
-    let y_positions = Array(columns).fill(0);
+  // ==========================================================
+  // 2. NAVIGATION LOGIC
+  // ==========================================================
+  const navBtns = document.querySelectorAll(".nav-btn");
+  const sections = document.querySelectorAll(".screen-section");
 
-    const matrixChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+';
+  navBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      // Remove active class from all
+      navBtns.forEach((b) => b.classList.remove("active"));
+      sections.forEach((s) => s.classList.remove("active"));
 
-    function drawMatrix() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = '#00FF00';
-        ctx.font = `${charSize}pt monospace`;
-
-        y_positions.forEach((y, index) => {
-            const char = matrixChars.charAt(Math.floor(Math.random() * matrixChars.length));
-            const x = index * charSize;
-            
-            ctx.fillText(char, x, y);
-
-            if (y > canvas.height && Math.random() > 0.99) {
-                y_positions[index] = 0;
-            } else {
-                y_positions[index] = y + charSize;
-            }
-        });
-    }
-
-    setInterval(drawMatrix, 50); 
-
-    window.addEventListener('resize', () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        columns = Math.floor(canvas.width / charSize);
-        y_positions = Array(columns).fill(0);
+      // Add active to clicked
+      btn.classList.add("active");
+      const targetId = btn.getAttribute("data-target");
+      document.getElementById(targetId).classList.add("active");
     });
+  });
 
-    // ==========================================================
-    // B. TERMINAL LOGIKASI
-    // ==========================================================
-    
-    const outputElement = document.getElementById('terminal-output');
-    const inputLineElement = document.getElementById('terminal-input-line');
-    const commandForm = document.getElementById('command-form');
-    const commandInput = document.getElementById('command-input');
-    const profileDataElement = document.getElementById('profile-data');
-    const terminalBody = document.getElementById('terminal-body');
-    const terminalContainer = document.querySelector('.terminal-container'); // 🟢 Terminal konteynerini topish
+  // ==========================================================
+  // 3. TERMINAL TYPING EFFECT
+  // ==========================================================
+  const outputElement = document.getElementById("terminal-output");
+  const initialLines = [
+    "Initializing NurbekOS v2.0...",
+    "Loading kernel modules... [OK]",
+    "Mounting file system... [OK]",
+    "Scanning for vulnerabilities... [NONE FOUND]",
+    "Starting audio subsystem (Saxophone.drv)... [OK]",
+    "System READY.",
+    "Welcome, User.",
+    "\nType 'help' for commands or use the Navigation Menu.",
+  ];
 
-    const initialTextLines = [
-        "Initializing system sequence...",
-        "Scanning network interfaces...",
-        "Connection status: [ OK ]",
-        "Security protocols loaded.",
-        "Welcome, operator.",
-        "",
-        "Type 'help' for available commands.",
-        ""
-    ];
+  let lineIndex = 0;
+  let charIndex = 0;
 
-    let lineIndex = 0;
-    let charIndex = 0;
+  function typeWriter() {
+    if (lineIndex < initialLines.length) {
+      const currentLine = initialLines[lineIndex];
+      // Append text directly for speed, animate last line or so if desired
+      // For now, let's type line by line cleanly
 
-    // 1. Dastlabki matnni yozish effekti
-    function typeWriter() {
-        if (lineIndex < initialTextLines.length) {
-            const currentLine = initialTextLines[lineIndex];
-            if (charIndex < currentLine.length) {
-                outputElement.textContent += currentLine.charAt(charIndex);
-                charIndex++;
-                setTimeout(typeWriter, 40);
-            } else {
-                outputElement.textContent += '\n'; 
-                lineIndex++;
-                charIndex = 0;
-                setTimeout(typeWriter, 300); 
-            }
-        } else {
-            inputLineElement.classList.remove('hidden');
-            commandInput.focus();
-        }
+      const p = document.createElement("div");
+      p.textContent = "> " + currentLine;
+      outputElement.appendChild(p);
+
+      lineIndex++;
+      setTimeout(typeWriter, 100); // Fast typing between lines
     }
+  }
 
-    // 2. Buyruqni jo'natish (Enter bosilganda)
-    commandForm.addEventListener('submit', (e) => {
-        e.preventDefault(); 
-        
-        const command = commandInput.value.trim().toLowerCase();
-        
-        const echo = document.createElement('div');
-        echo.innerHTML = `<span class="prompt-user">root@cyberspace</span>:<span class="prompt-path">~</span>$ ${command}`;
-        outputElement.appendChild(echo);
-        
-        commandInput.value = '';
+  // Start typing after a short delay
+  setTimeout(typeWriter, 500);
 
-        processCommand(command);
-        
-        terminalBody.scrollTop = terminalBody.scrollHeight;
-    });
+  // ==========================================================
+  // 4. TERMINAL INTERACTION (Easter Egg)
+  // ==========================================================
+  const cmdInput = document.getElementById("cmd-input");
 
-    // 3. Buyruqlarni qayta ishlash logikasi (YANGILANDI)
-    function processCommand(cmd) {
-        profileDataElement.classList.add('hidden');
-        
-        if (cmd === 'social') {
-            profileDataElement.classList.remove('hidden');
-        
-        } else if (cmd === 'help') {
-            const helpText = document.createElement('pre');
-            helpText.style.color = '#00ff00';
-            helpText.textContent = [
-                'Available commands:',
-                '  social   - Show contact protocols and biography',
-                '  help     - Display this help message',
-                '  clear    - Clear the terminal screen',
-                '  reboot   - Restart the console (visual effect)',
-                '  exit     - Shut down the terminal' // 🟢 'exit' qo'shildi
-            ].join('\n');
-            outputElement.appendChild(helpText);
-        
-        } else if (cmd === 'clear') {
-            outputElement.innerHTML = ''; 
-        
-        } else if (cmd === 'reboot') {
-            outputElement.innerHTML = 'System rebooting...\n';
-            lineIndex = 0;
-            charIndex = 0;
-            inputLineElement.classList.add('hidden'); 
-            setTimeout(typeWriter, 500);
-        
-        // 🟢 YANGI BUYRUQ: EXIT
-        } else if (cmd === 'exit') {
-            const exitText = document.createElement('pre');
-            exitText.style.color = '#00ff00';
-            exitText.textContent = 'Shutting down console... Goodbye.';
-            outputElement.appendChild(exitText);
-            
-            // Kiritish maydonini o'chirish
-            inputLineElement.classList.add('hidden');
-            
-            // Terminalni 1 soniyadan keyin silliq yo'qotish
-            setTimeout(() => {
-                terminalContainer.classList.add('fade-out');
-            }, 1000);
-        
-        } else if (cmd === '') {
-            // Hech narsa qilmaslik
-        
-        } else {
-            const errorText = document.createElement('pre');
-            errorText.style.color = '#ff0000';
-            errorText.textContent = `bash: command not found: ${cmd}`;
-            outputElement.appendChild(errorText);
-        }
+  cmdInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const cmd = cmdInput.value.trim().toLowerCase();
+      const div = document.createElement("div");
+      div.innerHTML = `<span style='color:white'>root@cyberspace:~$</span> ${cmd}`;
+      outputElement.appendChild(div);
+
+      let response = "";
+      if (cmd === "help") {
+        response = "Available: skills, music, contact, clear, whoami";
+      } else if (cmd === "whoami") {
+        response = "Nurbek. Pentester. Coder. Musician.";
+      } else if (cmd === "clear") {
+        outputElement.innerHTML = "";
+        response = "";
+      } else if (cmd === "skills") {
+        document.querySelector('[data-target="skills-section"]').click();
+        response = "Navigating to Skills...";
+      } else if (cmd === "music") {
+        document.querySelector('[data-target="music-section"]').click();
+        response = "Navigating to Music...";
+      } else {
+        response = `Command not found: ${cmd}`;
+      }
+
+      if (response) {
+        const respDiv = document.createElement("div");
+        respDiv.style.color = "#ccc";
+        respDiv.textContent = response;
+        outputElement.appendChild(respDiv);
+      }
+
+      cmdInput.value = "";
+      // Scroll to bottom
+      const termWindow = document.querySelector(".terminal-content");
+      termWindow.scrollTop = termWindow.scrollHeight;
     }
-
-    // 4. Terminalga bosish
-    terminalBody.addEventListener('click', () => {
-        commandInput.focus();
-    });
-
-    // 5. Boshlash
-    typeWriter();
+  });
 });

@@ -1,66 +1,234 @@
 <!DOCTYPE html>
 <html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nurbek | Virtual Konsol</title>
-    <link rel="stylesheet" href="./css/main.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📟</text></svg>">
-</head>
-<body>
-    <canvas id="matrix-canvas"></canvas> 
-    
-    <div class="terminal-container">
-        <header class="terminal-header">
-            <span class="header-text">[[ ROOT ACCESS GRANTED ]]</span>
-            <div class="header-controls">
-                <span class="control-btn minimize">_</span>
-                <span class="control-btn maximize">☐</span>
-                <span class="control-btn close">X</span>
-            </div>
-        </header>
-        <div class="terminal-body" id="terminal-body">
-            <pre id="terminal-output" class="terminal-output"></pre>
-            
-            <div id="terminal-input-line" class="terminal-prompt hidden">
-                <label for="command-input" class="prompt-label">
-                    <span class="prompt-user">root@cyberspace</span>:
-                    <span class="prompt-path">~</span>$ 
-                </label>
-                <form id="command-form" style="display: contents;">
-                    <input type="text" 
-                           id="command-input" 
-                           autocomplete="off" 
-                           autocorrect="off" 
-                           autocapitalize="off" 
-                           spellcheck="false" 
-                           autofocus>
-                </form>
-            </div>
-            <div class="profile-data hidden" id="profile-data">
-                <section class="about-me">
-                    <h2>// BIOGRAFİYA V 1.0</h2>
-                    <p class="bio-line">><span class="highlight">Status:</span> **ONLINE**</p>
-                    <p class="bio-line">><span class="highlight">Fayl nomi:</span> **NURBEK**</p>
-                    <p class="bio-line">><span class="highlight">ID:</span> **0x7F000001** (Lokal xost)</p>
-                    
-                    <p class="bio-line mt-2">><span class="highlight">Mutaxassislik 1:</span> **FRONTEND DEVELOPER**</p>
-                    <p class="bio-line">><span class="highlight">Mutaxassislik 2:</span> **PENETRATION TESTER**</p>
-                    <p class="bio-line">><span class="highlight">Hobby/Baza:</span> **SAX PLAYER**</p>
-                </section>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nurbek | Cyber Interface</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Orbitron:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Remix Icon CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📟</text></svg>"
+    />
+  </head>
+  <body>
+    <canvas id="matrix-canvas"></canvas>
+    <div class="scanline"></div>
 
-                <section class="contact-info mt-3">
-                    <h2>// BOG'LANISH PROTOKOLLARI</h2>
-                    <p class="contact-line">><span class="highlight">Email:</span> <a href="mailto:nurkn177@gmail.com">nurkn177@gmail.com</a></p>
-                    <p class="contact-line">><span class="highlight">Telefon:</span> <a href="tel:+998935922560">+998935922560</a></p>
-                    <p class="contact-line">><span class="highlight">Telegram:</span> <a href="https://t.me/makkalik_yigit" target="_blank">@makkalik_yigit</a></p>
-                    <p class="contact-line">><span class="highlight">Instagram:</span> <a href="https://instagram.com/nurbek_saxophonist" target="_blank">@nurbek_saxophonist</a></p>
-                </section>
-            </div>
+    <div class="cyber-interface">
+      <!-- Header -->
+      <header class="cyber-header">
+        <div class="brand">
+          <div class="glitch-wrapper">
+            <h1 class="glitch" data-text="NURBEK">NURBEK</h1>
+          </div>
+          <span class="rank"> // PENTESTER & FULLSTACK</span>
         </div>
+        <div class="system-status">
+          <span class="status-dot"></span> SYSTEM:
+          <span class="online">ONLINE</span>
+        </div>
+      </header>
+
+      <!-- Main Content Window -->
+      <main class="cyber-container">
+        <!-- Navigation / Command Center -->
+        <nav class="cyber-nav">
+          <button class="nav-btn active" data-target="terminal-section">
+            <i class="ri-terminal-box-line icon"></i>
+            <span class="text">TERMINAL</span>
+          </button>
+          <button class="nav-btn" data-target="skills-section">
+            <i class="ri-shield-flash-line icon"></i>
+            <span class="text">SKILLS</span>
+          </button>
+          <button class="nav-btn sax-btn" data-target="music-section">
+            <i class="ri-music-2-fill icon"></i> <span class="text">MUSIC</span>
+          </button>
+          <button class="nav-btn" data-target="contact-section">
+            <i class="ri-mail-send-line icon"></i>
+            <span class="text">CONTACT</span>
+          </button>
+        </nav>
+
+        <!-- Display Area -->
+        <div class="display-screen">
+          <!-- SECT 1: TERMINAL (Home) -->
+          <section id="terminal-section" class="screen-section active">
+            <div class="terminal-window">
+              <div class="terminal-bar">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="title">root@nurbek-os:~</span>
+              </div>
+              <div class="terminal-content" id="terminal-output">
+                <!-- Typying effect goes here -->
+              </div>
+              <div class="command-line">
+                <span class="prompt">root@cyberspace:~$</span>
+                <input
+                  type="text"
+                  id="cmd-input"
+                  placeholder="Type 'help'..."
+                  autocomplete="off"
+                />
+              </div>
+            </div>
+          </section>
+
+          <!-- SECT 2: SKILLS -->
+          <section id="skills-section" class="screen-section">
+            <h2 class="section-title">&lt;SYSTEM_CAPABILITIES /&gt;</h2>
+
+            <div class="skills-grid">
+              <div class="skill-category">
+                <h3>// OFFENSIVE_SECURITY</h3>
+                <div class="skill-bar-container">
+                  <div class="skill-label">Penetration Testing</div>
+                  <div class="skill-bar">
+                    <div
+                      class="fill"
+                      style="width: 90%; background: #ff3333"
+                    ></div>
+                  </div>
+                </div>
+                <div class="skill-bar-container">
+                  <div class="skill-label">Network Analysis</div>
+                  <div class="skill-bar">
+                    <div
+                      class="fill"
+                      style="width: 85%; background: #ff3333"
+                    ></div>
+                  </div>
+                </div>
+                <div class="skill-bar-container">
+                  <div class="skill-label">Cryptography</div>
+                  <div class="skill-bar">
+                    <div
+                      class="fill"
+                      style="width: 75%; background: #ff3333"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="skill-category">
+                <h3>// FULLSTACK_DEV</h3>
+                <div class="skill-bar-container">
+                  <div class="skill-label">Frontend (React/Vue/JS)</div>
+                  <div class="skill-bar">
+                    <div
+                      class="fill"
+                      style="width: 95%; background: #00ff00"
+                    ></div>
+                  </div>
+                </div>
+                <div class="skill-bar-container">
+                  <div class="skill-label">Backend (Node/Python)</div>
+                  <div class="skill-bar">
+                    <div
+                      class="fill"
+                      style="width: 88%; background: #00ff00"
+                    ></div>
+                  </div>
+                </div>
+                <div class="skill-bar-container">
+                  <div class="skill-label">Database (SQL/NoSQL)</div>
+                  <div class="skill-bar">
+                    <div
+                      class="fill"
+                      style="width: 80%; background: #00ff00"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SECT 3: MUSIC (Saxophone) -->
+          <section id="music-section" class="screen-section music-theme">
+            <h2 class="section-title text-gold">// AUDITORY_SUBSYSTEM</h2>
+            <div class="music-card">
+              <div class="visualizer">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+              </div>
+              <div class="instrument-info">
+                <h3>SAXOPHONE ARTIST</h3>
+                <p>
+                  Kod va musiqa o'rtasidagi uyg'unlik. Professional saksofon
+                  ijrochisi.
+                </p>
+                <div class="tags">
+                  <span class="tag gold">JAZZ</span>
+                  <span class="tag gold">BLUES</span>
+                  <span class="tag gold">IMPROVISATION</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SECT 4: CONTACT -->
+          <section id="contact-section" class="screen-section">
+            <h2 class="section-title">&lt;ESTABLISH_UPLINK /&gt;</h2>
+            <div class="contact-grid">
+              <a
+                href="https://t.me/makkalik_yigit"
+                target="_blank"
+                class="contact-card"
+              >
+                <div class="icon"><i class="ri-telegram-fill"></i></div>
+                <div class="info">TELEGRAM</div>
+                <div class="sub-info">@makkalik_yigit</div>
+              </a>
+              <a
+                href="https://instagram.com/nurbek_saxophonist"
+                target="_blank"
+                class="contact-card"
+              >
+                <div class="icon"><i class="ri-instagram-line"></i></div>
+                <div class="info">INSTAGRAM</div>
+                <div class="sub-info">@nurbek_saxophonist</div>
+              </a>
+              <a href="tel:+998935922560" class="contact-card">
+                <div class="icon"><i class="ri-phone-line"></i></div>
+                <div class="info">PHONE</div>
+                <div class="sub-info">+998 93 592 25 60</div>
+              </a>
+              <a href="mailto:nurkn177@gmail.com" class="contact-card">
+                <div class="icon"><i class="ri-mail-line"></i></div>
+                <div class="info">EMAIL</div>
+                <div class="sub-info">nurkn177@gmail.com</div>
+              </a>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="cyber-footer">
+        <p>SYSTEM_VERSION: 2.0.24 | DESIGNED_BY_NURBEK</p>
+      </footer>
     </div>
 
     <script src="./js/script.js"></script>
-</body>
+  </body>
 </html>
