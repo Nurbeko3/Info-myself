@@ -62,7 +62,7 @@ body {
   width: 95%;
   max-width: 1200px;
   height: auto;
-  max-height: calc(100vh - 40px);
+  min-height: auto;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
@@ -72,7 +72,7 @@ body {
   position: relative;
   border-radius: 8px;
   margin: 0 auto;
-  overflow: hidden;
+  overflow: visible;
 } 
 
 /* --- HEADER --- */
@@ -191,7 +191,9 @@ body {
   flex: 1;
   padding: 30px;
   overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
+  min-height: auto;
 }
 
 .screen-section {
@@ -426,7 +428,8 @@ body {
   
   .display-screen {
     padding: 20px;
-    overflow: visible; /* Let the container scroll */
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   
   .contact-grid {
@@ -455,6 +458,12 @@ body {
   .music-card { padding: 20px; }
   .contact-card { padding: 15px; }
   .skills-grid { grid-template-columns: 1fr; }
+  .section-title { font-size: 1.1rem; margin-bottom: 15px; }
+  .music-card { padding: 20px 15px; }
+  .visualizer { height: 80px; margin-bottom: 20px; }
+  .visualizer .bar { width: 12px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 12px; }
+  .contact-card { padding: 15px 12px; }
   #matrix-canvas { display: none; }
   .scanline { display: none; }
 }
