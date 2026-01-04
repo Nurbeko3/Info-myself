@@ -20,12 +20,13 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: var(--font-mono);
-  height: 100vh;
-  overflow: hidden; /* Prevent body scroll, handle inside container */
+  min-height: 100vh;
+  overflow: auto; /* Allow scrolling on smaller/tall content */
   display: flex;
   justify-content: center;
   align-items: center;
-}
+  padding: 20px;
+} 
 
 /* --- BACKGROUND FX --- */
 #matrix-canvas {
@@ -60,7 +61,8 @@ body {
 .cyber-interface {
   width: 95%;
   max-width: 1200px;
-  height: 90vh;
+  height: auto;
+  max-height: calc(100vh - 40px);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
@@ -69,7 +71,9 @@ body {
   backdrop-filter: blur(5px);
   position: relative;
   border-radius: 8px;
-}
+  margin: 0 auto;
+  overflow: hidden;
+} 
 
 /* --- HEADER --- */
 .cyber-header {
@@ -221,7 +225,9 @@ body {
   padding: 0;
   font-family: 'Roboto Mono', monospace;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
+  overflow: auto;
+  max-height: 60vh;
+} 
 
 .terminal-bar {
   background: #222;
@@ -269,6 +275,11 @@ body {
 }
 
 /* --- SKILLS --- */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
 .skill-category { margin-bottom: 40px; }
 .skill-category h3 { color: #888; margin-bottom: 15px; }
 
@@ -284,7 +295,7 @@ body {
   height: 100%;
   border-radius: 4px;
   box-shadow: 0 0 10px currentColor;
-}
+} 
 
 
 /* --- MUSIC SECTION (Visualizer) --- */
@@ -428,3 +439,23 @@ body {
     background: rgba(255,255,255,0.1);
   }
 }
+
+/* --- VERY SMALL SCREENS (phones) --- */
+@media (max-width: 420px) {
+  .brand h1 { font-size: 1.4rem; }
+  .rank { display: none; }
+  .cyber-header { padding: 8px 12px; gap: 8px; }
+  .nav-btn { padding: 10px; font-size: 0.75rem; gap: 6px; }
+  .nav-btn .text { display: none; } /* compact nav: icons only */
+  .display-screen { padding: 12px; }
+  .terminal-content { min-height: 160px; padding: 16px; }
+  .terminal-window { max-height: 50vh; }
+  #cmd-input { padding: 10px; font-size: 1rem; }
+  .visualizer .bar { width: 10px; }
+  .music-card { padding: 20px; }
+  .contact-card { padding: 15px; }
+  .skills-grid { grid-template-columns: 1fr; }
+  #matrix-canvas { display: none; }
+  .scanline { display: none; }
+}
+
